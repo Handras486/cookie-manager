@@ -1,3 +1,6 @@
+using CookieManager.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace CookieManager.WebAPI
 {
     public class Program
@@ -12,6 +15,12 @@ namespace CookieManager.WebAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<CookieManagerDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("CookieManagerConnectionString"), 
+                    b => b.MigrationsAssembly("CookieManager.Data"));
+            });
 
             var app = builder.Build();
 

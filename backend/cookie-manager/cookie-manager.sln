@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieManager.ConsoleClient", "CookieManager.ConsoleClient\CookieManager.ConsoleClient.csproj", "{5FAD565A-CBA5-436C-99F8-8A5374ABE552}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.ConsoleClient", "CookieManager.ConsoleClient\CookieManager.ConsoleClient.csproj", "{5FAD565A-CBA5-436C-99F8-8A5374ABE552}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieManager.Logic", "CookieManager.Logic\CookieManager.Logic.csproj", "{2555D92A-BDA8-4DE1-A13D-B6B05DD52DC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Logic", "CookieManager.Logic\CookieManager.Logic.csproj", "{2555D92A-BDA8-4DE1-A13D-B6B05DD52DC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieManager.Model", "CookieManager.Model\CookieManager.Model.csproj", "{44C10580-E27C-4887-9B33-43C3BCF3F696}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Models", "CookieManager.Model\CookieManager.Models.csproj", "{44C10580-E27C-4887-9B33-43C3BCF3F696}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieManager.Repository", "CookieManager.Repository\CookieManager.Repository.csproj", "{A1279FEE-A700-4165-8FA3-0BFCB495D468}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Repository", "CookieManager.Repository\CookieManager.Repository.csproj", "{A1279FEE-A700-4165-8FA3-0BFCB495D468}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieManager.Tests", "CookieManager.Tests\CookieManager.Tests.csproj", "{07AC6815-B65E-4204-82FA-4B86983922AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Tests", "CookieManager.Tests\CookieManager.Tests.csproj", "{07AC6815-B65E-4204-82FA-4B86983922AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.WebAPI", "CookieManager.WebAPI\CookieManager.WebAPI.csproj", "{B3D66601-0095-4A43-8BD9-F46A7D9D7B22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieManager.Data", "CookieManager.Data\CookieManager.Data.csproj", "{3266B1D9-4BD0-4376-8A3B-950A0583B5CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{07AC6815-B65E-4204-82FA-4B86983922AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07AC6815-B65E-4204-82FA-4B86983922AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07AC6815-B65E-4204-82FA-4B86983922AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3D66601-0095-4A43-8BD9-F46A7D9D7B22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3D66601-0095-4A43-8BD9-F46A7D9D7B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3D66601-0095-4A43-8BD9-F46A7D9D7B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3D66601-0095-4A43-8BD9-F46A7D9D7B22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3266B1D9-4BD0-4376-8A3B-950A0583B5CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3266B1D9-4BD0-4376-8A3B-950A0583B5CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3266B1D9-4BD0-4376-8A3B-950A0583B5CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3266B1D9-4BD0-4376-8A3B-950A0583B5CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
