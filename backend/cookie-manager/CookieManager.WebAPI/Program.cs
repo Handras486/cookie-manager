@@ -1,4 +1,5 @@
 using CookieManager.Data;
+using CookieManager.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookieManager.WebAPI
@@ -21,6 +22,8 @@ namespace CookieManager.WebAPI
                 options.UseSqlServer(builder.Configuration.GetConnectionString("CookieManagerConnectionString"), 
                     b => b.MigrationsAssembly("CookieManager.Data"));
             });
+
+            builder.Services.AddScoped<ICookieRepository, SQLCookieRepository>();
 
             var app = builder.Build();
 
