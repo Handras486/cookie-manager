@@ -1,4 +1,4 @@
-﻿using CookieManager.Models.Domain;
+﻿using CookieManager.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookieManager.Data

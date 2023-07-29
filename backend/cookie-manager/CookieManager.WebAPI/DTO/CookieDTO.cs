@@ -1,6 +1,6 @@
-﻿namespace CookieManager.Models.Domain
+﻿namespace CookieManager.WebAPI.DTO
 {
-    public class Cookie
+    public class CookieDTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
