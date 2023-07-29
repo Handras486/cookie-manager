@@ -1,5 +1,5 @@
-﻿using CookieManager.Data;
-using CookieManager.Models;
+﻿using CookieManager.Models;
+using CookieManager.Repository;
 using CookieManager.WebAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,34 +9,17 @@ namespace CookieManager.WebAPI.Controllers
     [ApiController]
     public class CookiesController : ControllerBase
     {
-        private readonly CookieManagerDbContext dbContext;
+        private readonly ICookieRepository cookieRepository;
 
-        public CookiesController(CookieManagerDbContext dbContext)
+        public CookiesController(ICookieRepository cookieRepository)
         {
-            this.dbContext = dbContext;
+            this.cookieRepository = cookieRepository;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-
-            //List<Cookie> cookies = new List<Cookie>
-            //{
-            //    new Cookie
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        Name = "Chocolate chip",
-            //        CookieImageUrl = "https://images.aws.nestle.recipes/original/5b069c3ed2feea79377014f6766fcd49_Original_NTH_Chocolate_Chip_Cookie.jpg"
-            //    },
-            //    new Cookie
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        Name = "Fortune cookie",
-            //        CookieImageUrl = "https://en.wikipedia.org/wiki/Fortune_cookie#/media/File:Fortune_cookies.jpg"
-            //    }
-            //};
-
-            var cookiesDomain = dbContext.Cookies.ToList();
+            var cookiesDomain = await cookieRepository.GetAllAsync();
 
             var cookiesDTO = new List<CookieDTO>();
             foreach (var cookieDomain in cookiesDomain)
@@ -54,9 +37,9 @@ namespace CookieManager.WebAPI.Controllers
 
         [HttpGet]
         [Route("{id:Guid}")]
-        public IActionResult Get([FromRoute] Guid id)
+        public async Task<IActionResult> Get([FromRoute] Guid id)
         {
-            var cookieDomain = dbContext.Cookies.FirstOrDefault(x => x.Id == id);
+            var cookieDomain = await cookieRepository.GetAsync(id);
 
             if (cookieDomain == null)
                 return NotFound();
@@ -72,7 +55,7 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] AddCookieRequestDTO addCookie)
+        public async Task<IActionResult> Create([FromBody] AddCookieRequestDTO addCookie)
         {
             var cookieDomain = new Cookie
             {
@@ -80,8 +63,7 @@ namespace CookieManager.WebAPI.Controllers
                 Name = addCookie.Name
             };
 
-            dbContext.Add(cookieDomain);
-            dbContext.SaveChanges();
+            await cookieRepository.CreateAsync(cookieDomain);
 
             var cookieDTO = new CookieDTO
             {
@@ -95,17 +77,18 @@ namespace CookieManager.WebAPI.Controllers
 
         [HttpPut]
         [Route("{id:Guid}")]
-        public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateCookieRequestDTO updateCookie)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCookieRequestDTO updateCookie)
         {
-            var cookieDomain = dbContext.Cookies.FirstOrDefault(dbContext => dbContext.Id == id);
+            var cookieDomain = new Cookie
+            {
+                CookieImageUrl = updateCookie.CookieImageUrl,
+                Name = updateCookie.Name
+            };
+
+            cookieDomain = await cookieRepository.UpdateAsync(id, cookieDomain);
 
             if (cookieDomain == null) 
                 return NotFound();
-
-            cookieDomain.CookieImageUrl = updateCookie.CookieImageUrl;
-            cookieDomain.Name = updateCookie.Name;
-
-            dbContext.SaveChanges();
 
             var cookieDTO = new CookieDTO
             {
@@ -119,15 +102,12 @@ namespace CookieManager.WebAPI.Controllers
 
         [HttpDelete]
         [Route("{id:Guid}")]
-        public IActionResult Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var cookieDomain = dbContext.Cookies.FirstOrDefault(x => x.Id == id);
+            var cookieDomain = await cookieRepository.DeleteAsync(id);
 
             if(cookieDomain == null)
                 return NotFound();
-
-            dbContext.Cookies.Remove(cookieDomain);
-            dbContext.SaveChanges();
 
             var cookieDTO = new CookieDTO
             {
