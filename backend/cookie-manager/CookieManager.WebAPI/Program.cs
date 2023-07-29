@@ -1,5 +1,6 @@
 using CookieManager.Data;
 using CookieManager.Repository;
+using CookieManager.WebAPI.Mappings;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookieManager.WebAPI
@@ -24,6 +25,8 @@ namespace CookieManager.WebAPI
             });
 
             builder.Services.AddScoped<ICookieRepository, SQLCookieRepository>();
+
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
             var app = builder.Build();
 

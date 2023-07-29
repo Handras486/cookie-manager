@@ -1,4 +1,5 @@
-﻿using CookieManager.Models;
+﻿using AutoMapper;
+using CookieManager.Models;
 using CookieManager.Repository;
 using CookieManager.WebAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
@@ -10,29 +11,20 @@ namespace CookieManager.WebAPI.Controllers
     public class CookiesController : ControllerBase
     {
         private readonly ICookieRepository cookieRepository;
+        private readonly IMapper mapper;
 
-        public CookiesController(ICookieRepository cookieRepository)
+        public CookiesController(ICookieRepository cookieRepository, IMapper mapper)
         {
             this.cookieRepository = cookieRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var cookiesDomain = await cookieRepository.GetAllAsync();
+            var cookieDomain = await cookieRepository.GetAllAsync();
 
-            var cookiesDTO = new List<CookieDTO>();
-            foreach (var cookieDomain in cookiesDomain)
-            {
-                cookiesDTO.Add(new CookieDTO()
-                {
-                    Name = cookieDomain.Name,
-                    Id = cookieDomain.Id,
-                    CookieImageUrl = cookieDomain.CookieImageUrl
-                });
-            }
-
-            return Ok(cookiesDTO);
+            return Ok(mapper.Map<List<CookieDTO>>(cookieDomain));
         }
 
         [HttpGet]
@@ -44,33 +36,17 @@ namespace CookieManager.WebAPI.Controllers
             if (cookieDomain == null)
                 return NotFound();
 
-            var cookieDTO = new CookieDTO()
-            {
-                CookieImageUrl = cookieDomain.CookieImageUrl,
-                Id = cookieDomain.Id,
-                Name = cookieDomain.Name
-            };
-
-            return Ok(cookieDTO);
+            return Ok(mapper.Map<CookieDTO>(cookieDomain));
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddCookieRequestDTO addCookie)
         {
-            var cookieDomain = new Cookie
-            {
-                CookieImageUrl = addCookie.CookieImageUrl,
-                Name = addCookie.Name
-            };
+            var cookieDomain = mapper.Map<Cookie>(addCookie);
 
             await cookieRepository.CreateAsync(cookieDomain);
 
-            var cookieDTO = new CookieDTO
-            {
-                CookieImageUrl = cookieDomain.CookieImageUrl,
-                Name = cookieDomain.Name,
-                Id = cookieDomain.Id
-            };
+            var cookieDTO = mapper.Map<CookieDTO>(cookieDomain);
 
             return CreatedAtAction(nameof(Get), new { id = cookieDTO.Id }, cookieDTO);
         }
@@ -79,25 +55,14 @@ namespace CookieManager.WebAPI.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCookieRequestDTO updateCookie)
         {
-            var cookieDomain = new Cookie
-            {
-                CookieImageUrl = updateCookie.CookieImageUrl,
-                Name = updateCookie.Name
-            };
+            var cookieDomain = mapper.Map<Cookie>(updateCookie);
 
             cookieDomain = await cookieRepository.UpdateAsync(id, cookieDomain);
 
             if (cookieDomain == null) 
                 return NotFound();
 
-            var cookieDTO = new CookieDTO
-            {
-                Name = cookieDomain.Name,
-                CookieImageUrl = cookieDomain.CookieImageUrl,
-                Id = cookieDomain.Id
-            };
-
-            return Ok(cookieDTO);
+            return Ok(mapper.Map<CookieDTO>(cookieDomain));
         }
 
         [HttpDelete]
@@ -109,14 +74,7 @@ namespace CookieManager.WebAPI.Controllers
             if(cookieDomain == null)
                 return NotFound();
 
-            var cookieDTO = new CookieDTO
-            {
-                Name = cookieDomain.Name,
-                CookieImageUrl = cookieDomain.CookieImageUrl,
-                Id = cookieDomain.Id
-            };
-
-            return Ok(cookieDTO);
+            return Ok(mapper.Map<CookieDTO>(cookieDomain));
         }
 
     }
