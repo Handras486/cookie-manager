@@ -4,6 +4,7 @@ using CookieManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookieManager.Data.Migrations
 {
     [DbContext(typeof(CookieManagerDbContext))]
-    partial class CookieManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230730202121_Seeding data for Cookies")]
+    partial class SeedingdataforCookies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
