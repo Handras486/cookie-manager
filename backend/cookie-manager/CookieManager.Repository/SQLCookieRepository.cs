@@ -40,7 +40,7 @@ namespace CookieManager.Repository
         }
 
         public async Task<List<Cookie>> GetAllAsync(string? filterOn = null, string? filterQuery = null,
-            string? sortBy = null, bool isAscending = true)
+            string? sortBy = null, bool isAscending = true, int pageNumber = 1, int pageSize = 100)
         {
             var cookies = dbContext.Cookies.AsQueryable();
 
@@ -56,8 +56,10 @@ namespace CookieManager.Repository
                     cookies = isAscending ? cookies.OrderBy(x => x.Name) : cookies.OrderByDescending(x => x.Name);
             }
 
+            var skipResults = (pageNumber - 1) * pageSize;
 
-            return await cookies.ToListAsync();
+
+            return await cookies.Skip(skipResults).Take(pageSize).ToListAsync();
             // return await dbContext.Cookies.ToListAsync();
         }
 
