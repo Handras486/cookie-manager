@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CookieManager.Models;
 using CookieManager.Repository;
+using CookieManager.WebAPI.CustomActionFilters;
 using CookieManager.WebAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,6 +41,7 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] AddCookieRequestDTO addCookie)
         {
             var cookieDomain = mapper.Map<Cookie>(addCookie);
@@ -52,6 +54,7 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpPut]
+        [ValidateModel]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCookieRequestDTO updateCookie)
         {
