@@ -39,9 +39,26 @@ namespace CookieManager.Repository
 
         }
 
-        public async Task<List<Cookie>> GetAllAsync()
+        public async Task<List<Cookie>> GetAllAsync(string? filterOn = null, string? filterQuery = null,
+            string? sortBy = null, bool isAscending = true)
         {
-            return await dbContext.Cookies.ToListAsync();
+            var cookies = dbContext.Cookies.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrEmpty(filterQuery))
+            {
+                if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                    cookies = cookies.Where(x => x.Name.Contains(filterQuery));
+            }
+
+            if (!string.IsNullOrWhiteSpace(sortBy))
+            {
+                if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                    cookies = isAscending ? cookies.OrderBy(x => x.Name) : cookies.OrderByDescending(x => x.Name);
+            }
+
+
+            return await cookies.ToListAsync();
+            // return await dbContext.Cookies.ToListAsync();
         }
 
         public async Task<Cookie?> GetAsync(Guid id)

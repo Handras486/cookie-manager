@@ -10,7 +10,7 @@ namespace CookieManager.Repository
 {
     public interface ICookieRepository
     {
-        Task<List<Cookie>> GetAllAsync();
+        Task<List<Cookie>> GetAllAsync(string? filterOn = null, string? filterQuery= null, string? sortBy = null, bool isAscending = true);
 
         Task<Cookie?> GetAsync(Guid id);
 
