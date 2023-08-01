@@ -5,7 +5,7 @@ namespace CookieManager.Data
 {
     public class CookieManagerDbContext : DbContext
     {
-        public CookieManagerDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+        public CookieManagerDbContext(DbContextOptions<CookieManagerDbContext> options) : base(options)
         {
 
         }
