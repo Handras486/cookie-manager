@@ -3,6 +3,7 @@ using CookieManager.Models;
 using CookieManager.Repository;
 using CookieManager.WebAPI.CustomActionFilters;
 using CookieManager.WebAPI.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookieManager.WebAPI.Controllers
@@ -21,6 +22,7 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
             [FromQuery] string? sortBy, [FromQuery] bool? isAscending, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100)
         {
@@ -30,6 +32,7 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Reader")]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
@@ -42,6 +45,7 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Writer")]
         [ValidateModel]
         public async Task<IActionResult> Create([FromBody] AddCookieRequestDTO addCookie)
         {
@@ -55,6 +59,7 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Writer")]
         [ValidateModel]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCookieRequestDTO updateCookie)
@@ -70,6 +75,7 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Writer")]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
