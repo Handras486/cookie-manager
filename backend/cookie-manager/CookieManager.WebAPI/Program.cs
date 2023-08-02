@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.FileProviders;
 
 namespace CookieManager.WebAPI
 {
@@ -19,6 +20,8 @@ namespace CookieManager.WebAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddHttpContextAccessor();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
@@ -64,6 +67,7 @@ namespace CookieManager.WebAPI
 
             builder.Services.AddScoped<ICookieRepository, SQLCookieRepository>();
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+            builder.Services.AddScoped<IImageRepository, LocalImageRepository>();
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
@@ -109,6 +113,11 @@ namespace CookieManager.WebAPI
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
+                RequestPath = "/Images"
+            });
 
             app.MapControllers();
 

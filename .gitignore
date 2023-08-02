@@ -396,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+#Local images folder
+backend/cookie-manager/CookieManager.WebAPI/Images/*
