@@ -5,7 +5,7 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.ConsoleClient", "CookieManager.ConsoleClient\CookieManager.ConsoleClient.csproj", "{5FAD565A-CBA5-436C-99F8-8A5374ABE552}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Logic", "CookieManager.Logic\CookieManager.Logic.csproj", "{2555D92A-BDA8-4DE1-A13D-B6B05DD52DC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Service", "CookieManager.Logic\CookieManager.Service.csproj", "{2555D92A-BDA8-4DE1-A13D-B6B05DD52DC5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Models", "CookieManager.Model\CookieManager.Models.csproj", "{44C10580-E27C-4887-9B33-43C3BCF3F696}"
 EndProject
@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Tests", "Cook
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.WebAPI", "CookieManager.WebAPI\CookieManager.WebAPI.csproj", "{B3D66601-0095-4A43-8BD9-F46A7D9D7B22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieManager.Data", "CookieManager.Data\CookieManager.Data.csproj", "{3266B1D9-4BD0-4376-8A3B-950A0583B5CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Data", "CookieManager.Data\CookieManager.Data.csproj", "{3266B1D9-4BD0-4376-8A3B-950A0583B5CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

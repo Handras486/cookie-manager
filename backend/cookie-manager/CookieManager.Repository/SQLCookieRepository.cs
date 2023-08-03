@@ -60,7 +60,6 @@ namespace CookieManager.Repository
 
 
             return await cookies.Skip(skipResults).Take(pageSize).ToListAsync();
-            // return await dbContext.Cookies.ToListAsync();
         }
 
         public async Task<Cookie?> GetAsync(Guid id)
