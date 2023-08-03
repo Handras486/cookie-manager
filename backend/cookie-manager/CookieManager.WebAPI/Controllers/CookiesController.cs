@@ -5,6 +5,7 @@ using CookieManager.WebAPI.CustomActionFilters;
 using CookieManager.WebAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CookieManager.WebAPI.Controllers
 {
@@ -14,11 +15,13 @@ namespace CookieManager.WebAPI.Controllers
     {
         private readonly ICookieRepository cookieRepository;
         private readonly IMapper mapper;
+        private readonly ILogger<CookiesController> logger;
 
-        public CookiesController(ICookieRepository cookieRepository, IMapper mapper)
+        public CookiesController(ICookieRepository cookieRepository, IMapper mapper, ILogger<CookiesController> logger)
         {
             this.cookieRepository = cookieRepository;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -27,6 +30,8 @@ namespace CookieManager.WebAPI.Controllers
             [FromQuery] string? sortBy, [FromQuery] bool? isAscending, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100)
         {
             var cookieDomain = await cookieRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
+
+            logger.LogInformation($"Finished GetAllCookies Action request with data: {JsonSerializer.Serialize(cookieDomain)}");
 
             return Ok(mapper.Map<List<CookieDTO>>(cookieDomain));
         }

@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.FileProviders;
+using Serilog;
 
 namespace CookieManager.WebAPI
 {
@@ -18,6 +19,15 @@ namespace CookieManager.WebAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            var logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File("Logs/CookieManager_Log.txt", rollingInterval: RollingInterval.Day)
+                .MinimumLevel.Warning()
+                .CreateLogger();
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddSerilog(logger);
 
             builder.Services.AddControllers();
             builder.Services.AddHttpContextAccessor();
