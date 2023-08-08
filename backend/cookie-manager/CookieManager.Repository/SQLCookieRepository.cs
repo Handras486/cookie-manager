@@ -1,6 +1,9 @@
-﻿using CookieManager.Data;
-using CookieManager.Models;
+﻿using CookieManager.Core.Entities;
+using CookieManager.Core.Specifications;
+using CookieManager.Data;
+using CookieManager.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,27 +42,23 @@ namespace CookieManager.Repository
 
         }
 
-        public async Task<List<Cookie>> GetAllAsync(string? filterOn = null, string? filterQuery = null,
-            string? sortBy = null, bool isAscending = true, int pageNumber = 1, int pageSize = 100)
+        public async Task<List<Cookie>> GetAllAsync(CookieQueryParameters queryParameters)
         {
             var cookies = dbContext.Cookies.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrEmpty(filterQuery))
+            if (!queryParameters.filterOn.IsNullOrEmpty())
             {
-                if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
-                    cookies = cookies.Where(x => x.Name.Contains(filterQuery));
+                if (queryParameters.filterOn.Equals("Name"))
+                    cookies = cookies.Where(x => x.Name.Contains(queryParameters.filterQuery));
             }
 
-            if (!string.IsNullOrWhiteSpace(sortBy))
+            if (!queryParameters.sortBy.IsNullOrEmpty())
             {
-                if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
-                    cookies = isAscending ? cookies.OrderBy(x => x.Name) : cookies.OrderByDescending(x => x.Name);
+                if (queryParameters.sortBy.Equals("Name"))
+                    cookies = queryParameters.isAscending ? cookies.OrderBy(x => x.Name) : cookies.OrderByDescending(x => x.Name);
             }
 
-            var skipResults = (pageNumber - 1) * pageSize;
-
-
-            return await cookies.Skip(skipResults).Take(pageSize).ToListAsync();
+            return await cookies.Skip(queryParameters.GetSkipResults()).Take(queryParameters.pageSize).ToListAsync();
         }
 
         public async Task<Cookie?> GetAsync(Guid id)
@@ -74,8 +73,11 @@ namespace CookieManager.Repository
             if (existingCookie == null)
                 return null;
 
-            existingCookie.Name = cookie.Name;
-            existingCookie.CookieImageUrl = cookie.CookieImageUrl;
+            if (cookie.Name != null)
+                existingCookie.Name = cookie.Name;
+
+            if (cookie.CookieImageUrl != null)
+                existingCookie.CookieImageUrl = cookie.CookieImageUrl;
 
             await dbContext.SaveChangesAsync();
             return existingCookie;

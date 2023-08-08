@@ -1,4 +1,5 @@
 ﻿using CookieManager.Repository;
+using CookieManager.Service.Interfaces;
 using CookieManager.WebAPI.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -13,12 +14,12 @@ namespace CookieManager.WebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> userManager;
-        private readonly ITokenRepository tokenRepository;
+        private readonly ITokenService tokenService;
 
-        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
+        public AuthController(UserManager<IdentityUser> userManager, ITokenService tokenService)
         {
             this.userManager = userManager;
-            this.tokenRepository = tokenRepository;
+            this.tokenService = tokenService;
         }
 
         [HttpPost]
@@ -63,7 +64,7 @@ namespace CookieManager.WebAPI.Controllers
 
                     if (roles != null)
                     {
-                        var jwtToken = tokenRepository.CreateJWTToken(user, roles.ToList());
+                        var jwtToken = tokenService.CreateJWTToken(user, roles.ToList());
 
                         var response = new LoginResponseDTO() { JwtToken = jwtToken };
 

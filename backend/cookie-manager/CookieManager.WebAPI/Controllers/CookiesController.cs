@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using CookieManager.Models;
-using CookieManager.Repository;
+using CookieManager.Core.Entities;
+using CookieManager.Core.Specifications;
+using CookieManager.Service.Interfaces;
 using CookieManager.WebAPI.CustomActionFilters;
 using CookieManager.WebAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
@@ -13,23 +14,22 @@ namespace CookieManager.WebAPI.Controllers
     [ApiController]
     public class CookiesController : ControllerBase
     {
-        private readonly ICookieRepository cookieRepository;
+        private readonly ICookieService cookieService;
         private readonly IMapper mapper;
         private readonly ILogger<CookiesController> logger;
 
-        public CookiesController(ICookieRepository cookieRepository, IMapper mapper, ILogger<CookiesController> logger)
+        public CookiesController(ICookieService cookieService, IMapper mapper, ILogger<CookiesController> logger)
         {
-            this.cookieRepository = cookieRepository;
+            this.cookieService = cookieService;
             this.mapper = mapper;
             this.logger = logger;
         }
 
         [HttpGet]
-        [Authorize(Roles = "Reader")]
-        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
-            [FromQuery] string? sortBy, [FromQuery] bool? isAscending, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100)
+        //[Authorize(Roles = "Reader")]
+        public async Task<IActionResult> GetAll([FromQuery] CookieQueryParameters queryParameters)
         {
-            var cookieDomain = await cookieRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
+            var cookieDomain = await cookieService.GetAllCookiesAsync(queryParameters);
 
             logger.LogInformation($"Finished GetAllCookies Action request with data: {JsonSerializer.Serialize(cookieDomain)}");
 
@@ -41,7 +41,7 @@ namespace CookieManager.WebAPI.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
-            var cookieDomain = await cookieRepository.GetAsync(id);
+            var cookieDomain = await cookieService.GetCookieAsync(id);
 
             if (cookieDomain == null)
                 return NotFound();
@@ -56,7 +56,7 @@ namespace CookieManager.WebAPI.Controllers
         {
             var cookieDomain = mapper.Map<Cookie>(addCookie);
 
-            await cookieRepository.CreateAsync(cookieDomain);
+            await cookieService.CreateCookieAsync(cookieDomain);
 
             var cookieDTO = mapper.Map<CookieDTO>(cookieDomain);
 
@@ -64,14 +64,14 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Writer")]
+        //[Authorize(Roles = "Writer")]
         [ValidateModel]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCookieRequestDTO updateCookie)
         {
             var cookieDomain = mapper.Map<Cookie>(updateCookie);
 
-            cookieDomain = await cookieRepository.UpdateAsync(id, cookieDomain);
+            cookieDomain = await cookieService.UpdateCookieAsync(id, cookieDomain);
 
             if (cookieDomain == null) 
                 return NotFound();
@@ -84,7 +84,7 @@ namespace CookieManager.WebAPI.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var cookieDomain = await cookieRepository.DeleteAsync(id);
+            var cookieDomain = await cookieService.DeleteCookieAsync(id);
 
             if(cookieDomain == null)
                 return NotFound();

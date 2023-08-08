@@ -1,5 +1,6 @@
-﻿using CookieManager.Data;
-using CookieManager.Models;
+﻿using CookieManager.Core.Entities;
+using CookieManager.Data;
+using CookieManager.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +18,8 @@ namespace CookieManager.Repository
             this.dbContext = dbContext;
         }
 
-        public async Task<Image> Upload(Image image, string serverUrl)
+        public async Task<Image> Upload(Image image)
         {
-            var localFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", $"{image.FileName}{image.FileExtension}");
-
-            var stream = new FileStream(localFilePath, FileMode.Create);
-            await image.File.CopyToAsync(stream);
-
-            var urlFilePath = $"{serverUrl}/Images/{image.FileName}{image.FileExtension}";
-
-            image.FilePath = urlFilePath;
-
             await dbContext.Images.AddAsync(image);
             await dbContext.SaveChangesAsync();
 

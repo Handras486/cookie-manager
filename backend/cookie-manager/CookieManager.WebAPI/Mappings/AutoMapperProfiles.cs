@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CookieManager.Models;
+using CookieManager.Core.Entities;
 using CookieManager.WebAPI.DTO;
 
 namespace CookieManager.WebAPI.Mappings

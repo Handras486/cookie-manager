@@ -1,4 +1,5 @@
-﻿using CookieManager.Models;
+﻿using CookieManager.Core.Entities;
+using CookieManager.Core.Specifications;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using System;
 using System.Collections.Generic;
@@ -6,12 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CookieManager.Repository
+namespace CookieManager.Repository.Interfaces
 {
     public interface ICookieRepository
     {
-        Task<List<Cookie>> GetAllAsync(string? filterOn = null, string? filterQuery= null,
-            string? sortBy = null, bool isAscending = true, int pageNumber = 1, int pageSize = 100);
+        Task<List<Cookie>> GetAllAsync(CookieQueryParameters queryParameters);
 
         Task<Cookie?> GetAsync(Guid id);
 

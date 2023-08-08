@@ -1,5 +1,7 @@
-﻿using CookieManager.Models;
-using CookieManager.Repository;
+﻿using CookieManager.Core.Entities;
+using CookieManager.Repository.Interfaces;
+using CookieManager.Service.Interfaces;
+using CookieManager.WebAPI.CustomActionFilters;
 using CookieManager.WebAPI.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,12 +12,12 @@ namespace CookieManager.WebAPI.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private readonly IImageRepository imageRepository;
+        private readonly IImageService imageService;
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        public ImagesController(IImageRepository imageRepository, IHttpContextAccessor httpContextAccessor)
+        public ImagesController(IImageService imageService, IHttpContextAccessor httpContextAccessor)
         {
-            this.imageRepository = imageRepository;
+            this.imageService = imageService;
             this.httpContextAccessor = httpContextAccessor;
         }
 
@@ -37,7 +39,7 @@ namespace CookieManager.WebAPI.Controllers
                 };
 
                 var serverUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}{httpContextAccessor.HttpContext.Request.PathBase}";
-                await imageRepository.Upload(imageDomain, serverUrl);
+                await imageService.UploadImage(imageDomain, serverUrl);
 
                 return Ok(imageDomain);
             }

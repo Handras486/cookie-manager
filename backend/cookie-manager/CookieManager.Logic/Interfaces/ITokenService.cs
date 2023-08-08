@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CookieManager.Repository
+namespace CookieManager.Service.Interfaces
 {
-    public interface ITokenRepository
+    public interface ITokenService
     {
         string CreateJWTToken(IdentityUser identityUser, List<string> roles);
     }

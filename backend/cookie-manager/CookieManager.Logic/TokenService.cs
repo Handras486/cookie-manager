@@ -1,17 +1,22 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CookieManager.Service.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace CookieManager.Repository
+namespace CookieManager.Service
 {
-    public class TokenRepository : ITokenRepository
+    public class TokenService : ITokenService
     {
         private readonly IConfiguration configuration;
 
-        public TokenRepository(IConfiguration configuration)
+        public TokenService(IConfiguration configuration)
         {
             this.configuration = configuration;
         }
@@ -32,7 +37,7 @@ namespace CookieManager.Repository
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                configuration["JWT:Issuer"], 
+                configuration["JWT:Issuer"],
                 configuration["JWT:Audience"],
                 claims,
                 expires: DateTime.Now.AddMinutes(15),

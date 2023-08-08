@@ -1,5 +1,4 @@
 using CookieManager.Data;
-using CookieManager.Repository;
 using CookieManager.WebAPI.Mappings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +9,10 @@ using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
 using CookieManager.WebAPI.Middlewares;
+using CookieManager.Service;
+using CookieManager.Service.Interfaces;
+using CookieManager.Repository.Interfaces;
+using CookieManager.Repository;
 
 namespace CookieManager.WebAPI
 {
@@ -76,8 +79,10 @@ namespace CookieManager.WebAPI
                     b => b.MigrationsAssembly("CookieManager.Data"));
             });
 
+            builder.Services.AddScoped<ICookieService, CookieService>();
             builder.Services.AddScoped<ICookieRepository, SQLCookieRepository>();
-            builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IImageService, ImageService>();
             builder.Services.AddScoped<IImageRepository, LocalImageRepository>();
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
