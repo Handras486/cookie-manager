@@ -22,11 +22,10 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpPost]
+        [ValidateFileUpload]
         [Route("Upload")]
         public async Task<IActionResult> Upload([FromForm] ImageUploadRequestDTO imageUploadRequest)
         {
-            ValidateFileUpload(imageUploadRequest);
-
             if (ModelState.IsValid)
             {
                 var imageDomain = new Image
@@ -45,22 +44,6 @@ namespace CookieManager.WebAPI.Controllers
             }
 
             return BadRequest(ModelState);
-        }
-
-        //TODO move to logic layer later
-        private void ValidateFileUpload(ImageUploadRequestDTO imageUploadRequest)
-        {
-            var allowedExtensions = new string[] { ".jpg", ".jpeg", ".png" };
-
-            if (!allowedExtensions.Contains(Path.GetExtension(imageUploadRequest.File.FileName.ToLower())))
-            {
-                ModelState.AddModelError("file", "Unsupported file extension!");
-            }
-
-            if (imageUploadRequest.File.Length > 10485760)
-            {
-                ModelState.AddModelError("file", "File size more than 10MB, please uploada smaller file!");
-            }
         }
     }
 }
