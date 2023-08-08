@@ -6,10 +6,7 @@ namespace CookieManager.ConsoleClient
     {
         static void Main(string[] args)
         {
-            Logic.Class1 class1 = new Logic.Class1();
-            class1.TestClass();
             Console.WriteLine("Hello, World!");
-
         }
     }
 }

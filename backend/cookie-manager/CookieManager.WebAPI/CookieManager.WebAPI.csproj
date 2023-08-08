@@ -27,7 +27,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CookieManager.Data\CookieManager.Data.csproj" />
-    <ProjectReference Include="..\CookieManager.Model\CookieManager.Models.csproj" />
+    <ProjectReference Include="..\CookieManager.Logic\CookieManager.Service.csproj" />
+    <ProjectReference Include="..\CookieManager.Model\CookieManager.Core.csproj" />
     <ProjectReference Include="..\CookieManager.Repository\CookieManager.Repository.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿namespace CookieManager.Models
+﻿namespace CookieManager.Core.Entities
 {
     public class Cookie
     {

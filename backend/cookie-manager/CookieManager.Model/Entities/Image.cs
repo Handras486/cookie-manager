@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CookieManager.Models
+namespace CookieManager.Core.Entities
 {
     public class Image
     {

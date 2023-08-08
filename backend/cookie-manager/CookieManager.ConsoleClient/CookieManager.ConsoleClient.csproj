@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CookieManager.Logic\CookieManager.Service.csproj" />
-    <ProjectReference Include="..\CookieManager.Model\CookieManager.Models.csproj" />
+    <ProjectReference Include="..\CookieManager.Model\CookieManager.Core.csproj" />
   </ItemGroup>
 
 </Project>

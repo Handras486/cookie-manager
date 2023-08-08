@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.ConsoleClient
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Service", "CookieManager.Logic\CookieManager.Service.csproj", "{2555D92A-BDA8-4DE1-A13D-B6B05DD52DC5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Models", "CookieManager.Model\CookieManager.Models.csproj", "{44C10580-E27C-4887-9B33-43C3BCF3F696}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Core", "CookieManager.Model\CookieManager.Core.csproj", "{44C10580-E27C-4887-9B33-43C3BCF3F696}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieManager.Repository", "CookieManager.Repository\CookieManager.Repository.csproj", "{A1279FEE-A700-4165-8FA3-0BFCB495D468}"
 EndProject
