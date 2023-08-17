@@ -12,6 +12,7 @@ namespace CookieManager.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Writer,Reader")]
     public class CookiesController : ControllerBase
     {
         private readonly ICookieService cookieService;
@@ -26,7 +27,6 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll([FromQuery] CookieQueryParameters queryParameters)
         {
             var cookieDomain = await cookieService.GetAllCookiesAsync(queryParameters);
@@ -37,7 +37,6 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Reader")]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
@@ -64,7 +63,7 @@ namespace CookieManager.WebAPI.Controllers
         }
 
         [HttpPut]
-        //[Authorize(Roles = "Writer")]
+        [Authorize(Roles = "Writer")]
         [ValidateModel]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCookieRequestDTO updateCookie)
