@@ -58,7 +58,7 @@ namespace CookieManager.Repository
                     cookies = queryParameters.isAscending ? cookies.OrderBy(x => x.Name) : cookies.OrderByDescending(x => x.Name);
             }
 
-            return await cookies.Skip(queryParameters.GetSkipResults()).Take(queryParameters.pageSize).ToListAsync();
+            return await cookies.OrderBy(x => x.Name).Skip(queryParameters.GetSkipResults()).Take(queryParameters.pageSize).ToListAsync();
         }
 
         public async Task<Cookie?> GetAsync(Guid id)
