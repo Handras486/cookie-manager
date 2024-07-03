@@ -398,4 +398,4 @@ FodyWeavers.xsd
 *.sln.iml
 
 #Local images folder
-backend/cookie-manager/CookieManager.WebAPI/Images/*
+CookieManager.WebAPI/Images/*
