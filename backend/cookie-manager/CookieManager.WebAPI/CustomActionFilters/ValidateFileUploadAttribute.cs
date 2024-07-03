@@ -19,7 +19,7 @@ namespace CookieManager.WebAPI.CustomActionFilters
 
             if (imageUploadRequest.File.Length > 10485760)
             {
-                context.ModelState.AddModelError("file", "File size more than 10MB, please uploada smaller file!");
+                context.ModelState.AddModelError("file", "File size more than 10MB, please upload a smaller file!");
             }
         }
     }
