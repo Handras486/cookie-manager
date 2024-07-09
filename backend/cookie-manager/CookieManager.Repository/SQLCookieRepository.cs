@@ -46,14 +46,17 @@ namespace CookieManager.Repository
         {
             var cookies = dbContext.Cookies.AsQueryable();
 
+            if (!queryParameters.filterOn.IsNullOrEmpty())
+            {
+                if (queryParameters.filterOn.Equals("Name"))
+                    cookies = cookies.Where(x => x.Name.Contains(queryParameters.filterQuery));
+            }
 
-            if (queryParameters.filterOn.Equals("Name"))
-                cookies = cookies.Where(x => x.Name.Contains(queryParameters.filterQuery));
-
-
-            if (queryParameters.sortBy.Equals("Name"))
-                cookies = queryParameters.isAscending ? cookies.OrderBy(x => x.Name) : cookies.OrderByDescending(x => x.Name);
-
+            if (!queryParameters.sortBy.IsNullOrEmpty())
+            {
+                if (queryParameters.sortBy.Equals("Name"))
+                    cookies = queryParameters.isAscending ? cookies.OrderBy(x => x.Name) : cookies.OrderByDescending(x => x.Name);
+            }
 
             return await cookies.OrderBy(x => x.Name).Skip(queryParameters.GetSkipResults()).Take(queryParameters.pageSize).ToListAsync();
         }
