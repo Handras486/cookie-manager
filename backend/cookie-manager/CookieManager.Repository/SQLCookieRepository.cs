@@ -48,13 +48,13 @@ namespace CookieManager.Repository
 
             if (!queryParameters.filterOn.IsNullOrEmpty())
             {
-                if (queryParameters.filterOn.Equals("Name"))
-                    cookies = cookies.Where(x => x.Name.Contains(queryParameters.filterQuery));
+                if (queryParameters.filterOn!.Equals("Name"))
+                    cookies = cookies.Where(x => x.Name.Contains(queryParameters.filterQuery!));
             }
 
             if (!queryParameters.sortBy.IsNullOrEmpty())
             {
-                if (queryParameters.sortBy.Equals("Name"))
+                if (queryParameters.sortBy!.Equals("Name"))
                     cookies = queryParameters.isAscending ? cookies.OrderBy(x => x.Name) : cookies.OrderByDescending(x => x.Name);
             }
 

@@ -21,29 +21,25 @@ namespace CookieManager.WebAPI.Controllers
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpPost]
+        [HttpPost("Upload")]
         [ValidateFileUpload]
-        [Route("Upload")]
+        [ValidateModel]
         public async Task<IActionResult> Upload([FromForm] ImageUploadRequestDTO imageUploadRequest)
         {
-            if (ModelState.IsValid)
+
+            var imageDomain = new Image
             {
-                var imageDomain = new Image
-                {
-                    File = imageUploadRequest.File,
-                    FileExtension = Path.GetExtension(imageUploadRequest.File.FileName),
-                    FileSizeInBytes = imageUploadRequest.File.Length,
-                    FileName = imageUploadRequest.FileName,
-                    FileDescription = imageUploadRequest.FileDescription,
-                };
+                File = imageUploadRequest.File,
+                FileExtension = Path.GetExtension(imageUploadRequest.File.FileName),
+                FileSizeInBytes = imageUploadRequest.File.Length,
+                FileName = imageUploadRequest.FileName,
+                FileDescription = imageUploadRequest.FileDescription,
+            };
 
-                var serverUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}{httpContextAccessor.HttpContext.Request.PathBase}";
-                await imageService.UploadImage(imageDomain, serverUrl);
+            var serverUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}{httpContextAccessor.HttpContext.Request.PathBase}";
+            await imageService.UploadImage(imageDomain, serverUrl);
 
-                return Ok(imageDomain);
-            }
-
-            return BadRequest(ModelState);
+            return Ok(imageDomain);
         }
     }
 }

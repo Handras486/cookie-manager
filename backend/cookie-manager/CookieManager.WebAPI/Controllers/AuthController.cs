@@ -22,8 +22,7 @@ namespace CookieManager.WebAPI.Controllers
             this.tokenService = tokenService;
         }
 
-        [HttpPost]
-        [Route("Register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDTO registerRequest)
         {
             var identityUser = new IdentityUser
@@ -48,8 +47,7 @@ namespace CookieManager.WebAPI.Controllers
             return BadRequest("Something went wrong");
         }
 
-        [HttpPost]
-        [Route("Login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
         {
             var user = await userManager.FindByEmailAsync(loginRequest.Username);

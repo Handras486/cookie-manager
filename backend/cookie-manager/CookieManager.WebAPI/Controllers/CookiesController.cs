@@ -36,8 +36,7 @@ namespace CookieManager.WebAPI.Controllers
             return Ok(mapper.Map<List<CookieDTO>>(cookieDomain));
         }
 
-        [HttpGet]
-        [Route("{id:Guid}")]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             var cookieDomain = await cookieService.GetCookieAsync(id);
@@ -62,10 +61,9 @@ namespace CookieManager.WebAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = cookieDTO.Id }, cookieDTO);
         }
 
-        [HttpPut]
+        [HttpPut("{id:Guid}")]
         [Authorize(Roles = "Writer")]
         [ValidateModel]
-        [Route("{id:Guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCookieRequestDTO updateCookie)
         {
             var cookieDomain = mapper.Map<Cookie>(updateCookie);
@@ -78,9 +76,8 @@ namespace CookieManager.WebAPI.Controllers
             return Ok(mapper.Map<CookieDTO>(cookieDomain));
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:Guid}")]
         [Authorize(Roles = "Writer")]
-        [Route("{id:Guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var cookieDomain = await cookieService.DeleteCookieAsync(id);
