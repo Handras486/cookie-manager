@@ -14,6 +14,8 @@ using CookieManager.Service.Interfaces;
 using CookieManager.Repository.Interfaces;
 using CookieManager.Repository;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using CookieManager.WebAPI.Extensions;
+using System.Runtime.CompilerServices;
 
 namespace CookieManager.WebAPI
 {
@@ -36,93 +38,8 @@ namespace CookieManager.WebAPI
 
             builder.Services.AddControllers();
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddApplicationServices(builder.Configuration);
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Cookie Manager API", Version = "v1" });
-                options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
-                {
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = JwtBearerDefaults.AuthenticationScheme
-                });
-
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = JwtBearerDefaults.AuthenticationScheme
-                            },
-                            Scheme = "Oauth2",
-                            Name = JwtBearerDefaults.AuthenticationScheme,
-                            In = ParameterLocation.Header
-                        },
-                        new List<string>()
-                    }
-                });
-            });
-
-            builder.Services.AddDbContext<CookieManagerDbContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("CookieManagerConnectionString"),
-                    b => b.MigrationsAssembly("CookieManager.Data"));
-            });
-            builder.Services.AddDbContext<CookieManagerAuthDbContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("CookieManagerAuthConnectionString"),
-                    b => b.MigrationsAssembly("CookieManager.Data"));
-            });
-
-            builder.Services.AddScoped<ICookieService, CookieService>();
-            builder.Services.AddScoped<ICookieRepository, SQLCookieRepository>();
-            builder.Services.AddScoped<ITokenService, TokenService>();
-            builder.Services.AddScoped<IImageService, ImageService>();
-            builder.Services.AddScoped<IImageRepository, LocalImageRepository>();
-
-            builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
-
-            builder.Services.AddIdentityCore<IdentityUser>()
-                .AddRoles<IdentityRole>()
-                .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("CookieManager")
-                .AddEntityFrameworkStores<CookieManagerAuthDbContext>()
-                .AddDefaultTokenProviders();
-
-            builder.Services.Configure<IdentityOptions>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 1;
-            });
-
-            builder.Services.AddCors(opt => {
-                opt.AddPolicy("CorsPolicy", policy =>
-                {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
-                });
-                }
-            );
-
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["JWT:Issuer"],
-                    ValidAudience = builder.Configuration["JWT:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
-                });
 
             var app = builder.Build();
 
@@ -134,14 +51,10 @@ namespace CookieManager.WebAPI
             }
 
             app.UseMiddleware<ExceptionHandlerMiddleware>();
-
             app.UseHttpsRedirection();
-
             app.UseCors("CorsPolicy");
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
