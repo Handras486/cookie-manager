@@ -69,6 +69,8 @@ namespace CookieManager.WebAPI.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IImageRepository, LocalImageRepository>();
+            services.AddScoped<IActivityService, ActivityService>();
+            services.AddScoped<IActivityRepository, SQLActivityRepository>();
 
 
             //AUTOMAPPER

@@ -14,6 +14,8 @@ namespace CookieManager.Data
 
         public DbSet<Image> Images { get; set; }
 
+        public DbSet<Activity> Activities { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
