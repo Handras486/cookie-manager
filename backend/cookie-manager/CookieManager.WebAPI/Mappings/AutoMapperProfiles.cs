@@ -10,9 +10,12 @@ namespace CookieManager.WebAPI.Mappings
         {
             CreateMap<Activity, Activity>();
             CreateMap<Activity, ActivityDTO>().ReverseMap();
+
+            CreateMap<Cookie, Cookie>();
             CreateMap<Cookie, CookieDTO>().ReverseMap();
-            CreateMap<AddCookieRequestDTO, Cookie>().ReverseMap();
-            CreateMap<UpdateCookieRequestDTO, Cookie>().ReverseMap();
+            CreateMap<Cookie, AddCookieRequestDTO>().ReverseMap();
+            CreateMap<Cookie, UpdateCookieRequestDTO>().ReverseMap();
+
         }
     }
 }

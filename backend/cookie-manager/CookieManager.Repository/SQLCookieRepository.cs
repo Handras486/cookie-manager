@@ -39,7 +39,6 @@ namespace CookieManager.Repository
             await dbContext.SaveChangesAsync();
 
             return existingCookie;
-
         }
 
         public async Task<List<Cookie>> GetAllAsync(CookieQueryParameters queryParameters)
@@ -72,12 +71,6 @@ namespace CookieManager.Repository
 
             if (existingCookie == null)
                 return null;
-
-            if (cookie.Name != null)
-                existingCookie.Name = cookie.Name;
-
-            if (cookie.CookieImageUrl != null)
-                existingCookie.CookieImageUrl = cookie.CookieImageUrl;
 
             await dbContext.SaveChangesAsync();
             return existingCookie;

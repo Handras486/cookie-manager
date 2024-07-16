@@ -1,25 +1,20 @@
-﻿using CookieManager.Core.Entities;
-using CookieManager.Core.Specifications;
+﻿using CookieManager.Core.Specifications;
 using CookieManager.Repository.Interfaces;
 using CookieManager.Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Cookie = CookieManager.Core.Entities.Cookie;
+using AutoMapper;
 
 namespace CookieManager.Service
 {
     public class CookieService : ICookieService
     {
         private readonly ICookieRepository cookieRepository;
+        private readonly IMapper mapper;
 
-        public CookieService(ICookieRepository cookieRepository)
+        public CookieService(ICookieRepository cookieRepository, IMapper mapper)
         {
             this.cookieRepository = cookieRepository;
+            this.mapper = mapper;
         }
 
         public async Task<Cookie> CreateCookieAsync(Cookie createCookie)
@@ -68,7 +63,11 @@ namespace CookieManager.Service
 
         public async Task<Cookie?> UpdateCookieAsync(Guid id, Cookie cookie)
         {
-            return await cookieRepository.UpdateAsync(id, cookie);
+            var updateCookie = await cookieRepository.UpdateAsync(id, cookie);
+
+            mapper.Map(updateCookie, cookie);
+
+            return updateCookie;
         }
     }
 }

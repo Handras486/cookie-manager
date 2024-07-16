@@ -10,7 +10,6 @@ namespace CookieManager.Service.Interfaces
 {
     public interface ICookieService
     {
-
         Task<List<Cookie>> GetAllCookiesAsync(CookieQueryParameters queryParameters);
 
         Task<Cookie?> GetCookieAsync(Guid id);
