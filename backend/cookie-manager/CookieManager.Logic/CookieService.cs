@@ -65,7 +65,7 @@ namespace CookieManager.Service
         {
             var updateCookie = await cookieRepository.UpdateAsync(id, cookie);
 
-            mapper.Map(updateCookie, cookie);
+            mapper.Map(cookie, updateCookie);
 
             return updateCookie;
         }

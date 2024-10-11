@@ -49,7 +49,7 @@ namespace CookieManager.Service
         {
             var updateActivity = await activityRepository.UpdateAsync(id, activity);
 
-            mapper.Map(updateActivity, activity);
+            mapper.Map(activity, updateActivity);
 
             return updateActivity;
         }
